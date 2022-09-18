@@ -1,0 +1,19 @@
+node_modules
+
+.cache
+.env
+.vercel
+.output
+
+/build/
+/public/build
+/api/
+
+
+
+# Supabase
+**/supabase/.branches
+**/supabase/.temp
+
+# Tailwind
+/app/styles/app.css
