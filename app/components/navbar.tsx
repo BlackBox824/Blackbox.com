@@ -52,7 +52,6 @@ function UserMenu({ name, imgUrl }: { name: string; imgUrl: string }) {
 					aria-expanded='false'
 					aria-haspopup='true'
 					onClick={() => {
-						console.log('Clicked!');
 						setIsOpen(!isOpen);
 					}}
 				>

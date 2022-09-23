@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { json } from '@remix-run/node';
 import {
 	Links,
@@ -14,7 +14,6 @@ import styles from '~/styles/app.css';
 import supabase from '~/utils/supabase';
 
 import type { LinksFunction, MetaFunction } from '@remix-run/node';
-import type { User } from '@supabase/supabase-js';
 
 export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];
@@ -37,15 +36,11 @@ export const loader = async () => {
 
 export default function App() {
 	const { env } = useLoaderData();
-	const [user, setUser] = useState<User | null>(null);
 	const fetcher = useFetcher();
 
 	useEffect(() => {
-		setUser(supabase.auth.user());
 		const { data: listner } = supabase.auth.onAuthStateChange(
 			(event, session) => {
-				setUser(session?.user ?? null);
-
 				if (event === 'SIGNED_IN' && session?.access_token) {
 					fetcher.submit(
 						{
@@ -80,7 +75,7 @@ export default function App() {
 				<Links />
 			</head>
 			<body className='antialiased text-slate-900 bg-slate-50'>
-				<Outlet context={{ user }} />
+				<Outlet />
 				<ScrollRestoration />
 				<script
 					dangerouslySetInnerHTML={{
