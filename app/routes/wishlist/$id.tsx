@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import type { Wishlist, Item } from '~/models';
 
 import { json } from '@remix-run/node';
-import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
+import { Form, useLoaderData, useTransition } from '@remix-run/react';
 import { Navbar } from '~/components';
 import { requireUser } from '~/utils/auth';
 
@@ -80,15 +80,10 @@ export default function WishlistItem() {
 		<>
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
-				<div className='flex items-center justify-between mt-4'>
-					<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-						{wishlist.title} by {user.user_metadata.full_name}
-					</h3>
-					<Link to='/home' className='text-blue-500 underline'>
-						Go home
-					</Link>
-				</div>
-				<div className='mt-2 p-4 bg-slate-100 flex flex-col items-center justify-center min-h-[150px] text-center rounded'>
+				<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
+					{wishlist.title} by {user.user_metadata.full_name}
+				</h3>
+				<div className='flex flex-col items-center justify-center p-4 mt-2 text-center rounded bg-slate-100'>
 					{item.length > 0 ? (
 						<ol className='flex flex-col w-full gap-4 md:w-3/4'>
 							{item.map(({ id, name, received }) => (

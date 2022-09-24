@@ -1,6 +1,7 @@
 import type { User } from '@supabase/supabase-js';
 
 import { useState } from 'react';
+import { Link } from '@remix-run/react';
 import supabase from '~/utils/supabase';
 
 export function Navbar({ user }: { user?: User | null }) {
@@ -14,7 +15,9 @@ export function Navbar({ user }: { user?: User | null }) {
 		<nav className='bg-gray-800'>
 			<div className='max-w-6xl px-2 mx-auto sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
-					<h1 className='text-lg font-bold text-white'>BlackBox</h1>
+					<Link to='/home'>
+						<h1 className='text-lg font-bold text-white'>BlackBox</h1>
+					</Link>
 					{user ? (
 						<UserMenu
 							name={user.user_metadata.full_name as string}
@@ -75,15 +78,24 @@ function UserMenu({ name, imgUrl }: { name: string; imgUrl: string }) {
 				aria-labelledby='user-menu-button'
 				tabIndex={-1}
 			>
-				<a
-					href='/profile'
+				<Link
+					to='/wishlist'
 					className='block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-slate-200'
 					role='menuitem'
 					tabIndex={-1}
 					id='user-menu-item-0'
 				>
+					Explore Wishlists
+				</Link>
+				<Link
+					to='/profile/edit'
+					className='block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-slate-200'
+					role='menuitem'
+					tabIndex={-1}
+					id='user-menu-item-1'
+				>
 					Your Profile
-				</a>
+				</Link>
 				<button
 					className='w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-gray-900 hover:bg-slate-200'
 					role='menuitem'

@@ -9,8 +9,14 @@ import { requireUser } from '~/utils/auth';
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const { supabaseClient, user } = await requireUser(request);
-	const { data: wishlist } = await supabaseClient.from('wishlist').select('*');
-	const { data: events } = await supabaseClient.from('event').select('*');
+	const { data: wishlist } = await supabaseClient
+		.from('wishlist')
+		.select('*')
+		.match({ user_id: user.id });
+	const { data: events } = await supabaseClient
+		.from('event')
+		.select('*')
+		.match({ user_id: user.id });
 
 	return json({ wishlist, events, user });
 };
@@ -22,7 +28,7 @@ type LoaderData = {
 };
 
 export default function Home() {
-	const { wishlist, user } = useLoaderData<LoaderData>();
+	const { wishlist, events, user } = useLoaderData<LoaderData>();
 	return (
 		<>
 			<Navbar user={user} />
@@ -33,9 +39,9 @@ export default function Home() {
 				<h3 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 					My Wishlists
 				</h3>
-				<div className='mt-2 p-4 bg-slate-100 flex flex-col items-center justify-center min-h-[150px] text-center rounded'>
+				<div className='p-4 mt-2 text-center rounded bg-slate-100'>
 					{wishlist.length > 0 ? (
-						<ol className='grid items-center justify-around grid-cols-3 gap-4'>
+						<ol className='grid items-center justify-around gap-4 md:grid-cols-3 max-h-[350px] overflow-y-scroll'>
 							{wishlist.map(list => (
 								<li
 									key={list.id}
@@ -67,11 +73,27 @@ export default function Home() {
 				<h3 className='mt-8 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 					My Events
 				</h3>
-				<div className='mt-2 p-4 bg-slate-100 flex flex-col items-center justify-center min-h-[150px] text-center rounded'>
-					<p>You have not created any events yet!</p>
+				<div className='p-4 mt-2 text-center rounded bg-slate-100'>
+					{events.length > 0 ? (
+						<ol className='grid items-center justify-around gap-4 md:grid-cols-3 max-h-[250px] overflow-y-scroll'>
+							{events.map(e => (
+								<li
+									key={e.id}
+									className='self-start p-4 py-6 bg-white border rounded-md shadow'
+								>
+									<h4 className='font-medium text-gray-700'>{e.name}</h4>
+									<p className='max-w-xs mt-1 text-sm font-light text-gray-500'>
+										{e.date}
+									</p>
+								</li>
+							))}
+						</ol>
+					) : (
+						<p>You have not created any events yet!</p>
+					)}
 					<Link
 						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
-						to='/add-event'
+						to='/event/add'
 					>
 						+ Add event
 					</Link>

@@ -41,11 +41,10 @@ export default function AddWishlist() {
 		<>
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
-				<h2 className='text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight'></h2>
 				<h3 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 					Create a new wishlist
 				</h3>
-				<div className='mt-2 p-4 md:px-8 bg-slate-100 flex flex-col items-center justify-center min-h-[150px] rounded'>
+				<div className='flex flex-col items-center justify-center p-4 mt-2 rounded md:px-8 bg-slate-100'>
 					<Form method='post' className='flex flex-col w-full'>
 						<div>
 							<label

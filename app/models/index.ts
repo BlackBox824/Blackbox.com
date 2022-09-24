@@ -21,3 +21,13 @@ export type Item = {
 	received: boolean;
 	wishlist_id: string;
 };
+
+export type Profile = {
+	created_at: Date;
+	id: string;
+	phone: string;
+	address: string;
+	dob: Date;
+	name: string;
+	email: string;
+};
