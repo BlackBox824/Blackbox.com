@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 				item.user.name
 					.toLowerCase()
 					.includes(searchTerm?.trim().toLowerCase())) ||
-			item.user.phone === searchTerm
+			(item.user.phone && item.user.phone === searchTerm)
 	);
 
 	return json({ wishlist: filteredWishlist, user });
