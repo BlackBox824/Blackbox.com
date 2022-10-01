@@ -39,9 +39,10 @@ export default function App() {
 	const fetcher = useFetcher();
 
 	useEffect(() => {
+		const user = supabase.auth.user();
 		const { data: listner } = supabase.auth.onAuthStateChange(
 			(event, session) => {
-				if (event === 'SIGNED_IN' && session?.access_token) {
+				if (event === 'SIGNED_IN' && session?.access_token && !user) {
 					fetcher.submit(
 						{
 							accessToken: session.access_token,

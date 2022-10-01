@@ -16,7 +16,7 @@ export function Navbar({ user }: { user?: User | null }) {
 			<div className='max-w-6xl px-2 mx-auto sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
 					<Link to='/home'>
-						<h1 className='text-lg font-bold text-white'>BlackBox</h1>
+						<h1 className='text-lg font-bold text-white'>MYW</h1>
 					</Link>
 					{user ? (
 						<UserMenu
@@ -79,22 +79,22 @@ function UserMenu({ name, imgUrl }: { name: string; imgUrl: string }) {
 				tabIndex={-1}
 			>
 				<Link
-					to='/wishlist'
-					className='block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-slate-200'
-					role='menuitem'
-					tabIndex={-1}
-					id='user-menu-item-0'
-				>
-					Explore Wishlists
-				</Link>
-				<Link
 					to='/profile/edit'
 					className='block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-slate-200'
 					role='menuitem'
 					tabIndex={-1}
 					id='user-menu-item-1'
 				>
-					Your Profile
+					Update Profile
+				</Link>
+				<Link
+					to='/event/add'
+					className='block px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-slate-200'
+					role='menuitem'
+					tabIndex={-1}
+					id='user-menu-item-0'
+				>
+					Add Events
 				</Link>
 				<button
 					className='w-full px-4 py-2 text-sm text-left text-gray-700 hover:text-gray-900 hover:bg-slate-200'

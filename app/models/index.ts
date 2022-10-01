@@ -4,6 +4,7 @@ export type Wishlist = {
 	id: string;
 	title: string;
 	user_id: string;
+	disabled?: boolean;
 };
 
 export type Event = {

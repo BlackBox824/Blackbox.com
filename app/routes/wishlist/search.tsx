@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 		id,
 		title,
 		description,
-		user: user_id ( name, phone, email )
+		user: user_id ( id, name, phone, email )
 	`);
 
 	const filteredWishlist = wishlist?.filter(
@@ -37,8 +37,17 @@ type LoaderData = {
 	user: User;
 };
 
-export default function Home() {
+export default function Explore() {
 	const { wishlist, user } = useLoaderData<LoaderData>();
+
+	const userList = wishlist?.reduce((curr, acc) => {
+		curr[acc?.user?.id] = curr[acc?.user?.id] || [];
+		curr[acc?.user?.id].push(acc);
+		return curr;
+	}, Object.create(null));
+
+	const resultedUsers = userList ? Object.keys(userList) : [];
+	console.log(userList);
 
 	return (
 		<>
@@ -77,20 +86,19 @@ export default function Home() {
 							className='w-full py-2 pl-12 pr-4 placeholder-gray-400 border border-gray-300 rounded-md'
 						/>
 					</Form>
-					{wishlist?.length > 0 ? (
-						<ol className='grid items-center justify-around gap-4 mt-8 md:grid-cols-3'>
-							{wishlist.map(list => (
+					{resultedUsers?.length > 0 ? (
+						<ol className='flex flex-col gap-2 mt-4'>
+							{resultedUsers.map(userId => (
 								<li
-									key={list.id}
-									className='self-start p-4 py-6 bg-white border rounded-md shadow'
+									key={userId}
+									className='flex items-center justify-between p-4 py-6 bg-white border rounded-md shadow'
 								>
-									<h4 className='font-medium text-gray-700'>{list.title}</h4>
-									<p className='max-w-xs mt-1 text-sm font-light text-gray-500'>
-										{list.description}
-									</p>
+									<h4 className='font-medium text-gray-700'>
+										{userList[userId][0].user.name} ({userList[userId].length})
+									</h4>
 									<Link
-										className='inline-flex justify-center px-3 py-1 mt-6 text-sm font-medium text-indigo-700 border border-indigo-700 rounded hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
-										to={`/wishlist/${list.id}`}
+										className='inline-flex justify-center px-3 py-1 text-sm font-medium text-indigo-700 border border-indigo-700 rounded hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+										to={`/wishlists/${userId}`}
 									>
 										View
 									</Link>

@@ -76,12 +76,14 @@ export default function WishlistItem() {
 	const isDeleting = transition.submission?.formData.get('intent') === 'delete';
 	const isUpdating = transition.submission?.formData.get('intent') === 'update';
 
+	const isCurrentUser = wishlist.user_id === user.id;
+
 	return (
 		<>
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
 				<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-					{wishlist.title} by {user.user_metadata.full_name}
+					{wishlist.title}
 				</h3>
 				<div className='flex flex-col items-center justify-center p-4 mt-2 text-center rounded bg-slate-100'>
 					{item.length > 0 ? (
@@ -92,6 +94,30 @@ export default function WishlistItem() {
 										<label htmlFor='id'>
 											<input name='id' className='hidden' defaultValue={id} />
 										</label>
+										<button
+											type='submit'
+											name='intent'
+											value='update'
+											disabled={isUpdating}
+											className={`mr-2 inline-flex justify-center p-0.5 text-sm ${
+												received
+													? 'bg-green-500 border border-transparent hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
+													: 'border border-gray-500'
+											} rounded text-white`}
+										>
+											<svg
+												xmlns='http://www.w3.org/2000/svg'
+												viewBox='0 0 20 20'
+												fill='currentColor'
+												className='w-4 h-4'
+											>
+												<path
+													fillRule='evenodd'
+													d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
+													clipRule='evenodd'
+												/>
+											</svg>
+										</button>
 										<h4
 											className={`font-medium ${
 												received
@@ -102,29 +128,7 @@ export default function WishlistItem() {
 											{name}
 										</h4>
 										<div className='flex-1' />
-										<div className='flex items-center gap-4'>
-											{received ? null : (
-												<button
-													type='submit'
-													name='intent'
-													value='update'
-													disabled={isUpdating}
-													className='inline-flex justify-center px-3 py-1 pt-1.5 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
-												>
-													<svg
-														xmlns='http://www.w3.org/2000/svg'
-														viewBox='0 0 20 20'
-														fill='currentColor'
-														className='w-5 h-5'
-													>
-														<path
-															fillRule='evenodd'
-															d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
-															clipRule='evenodd'
-														/>
-													</svg>
-												</button>
-											)}
+										{isCurrentUser ? (
 											<button
 												type='submit'
 												name='intent'
@@ -145,7 +149,7 @@ export default function WishlistItem() {
 													/>
 												</svg>
 											</button>
-										</div>
+										) : null}
 									</Form>
 								</li>
 							))}
@@ -153,48 +157,50 @@ export default function WishlistItem() {
 					) : (
 						<p>There are no items in your wishlist...</p>
 					)}
-					<Form
-						method='post'
-						className='flex justify-between w-full mt-6 md:w-3/4 item-center'
-					>
-						<div className='flex-1'>
-							<label
-								htmlFor='name'
-								className='block text-sm font-medium text-left text-gray-700 sr-only'
-							>
-								Item Name
-							</label>
-							<div className='flex rounded-md shadow-sm'>
-								<input
-									type='text'
-									name='name'
-									id='name'
-									required
-									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='Add item'
-								/>
-							</div>
-						</div>
-						<button
-							type='submit'
-							className='inline-flex justify-center px-3 py-1 pt-1.5 ml-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+					{isCurrentUser ? (
+						<Form
+							method='post'
+							className='flex justify-between w-full mt-6 md:w-3/4 item-center'
 						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								fill='none'
-								viewBox='0 0 24 24'
-								strokeWidth={1.5}
-								stroke='currentColor'
-								className='w-6 h-6'
+							<div className='flex-1'>
+								<label
+									htmlFor='name'
+									className='block text-sm font-medium text-left text-gray-700 sr-only'
+								>
+									Item Name
+								</label>
+								<div className='flex rounded-md shadow-sm'>
+									<input
+										type='text'
+										name='name'
+										id='name'
+										required
+										className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+										placeholder='Add item'
+									/>
+								</div>
+							</div>
+							<button
+								type='submit'
+								className='inline-flex justify-center px-3 py-1 pt-1.5 ml-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 							>
-								<path
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									d='M12 4.5v15m7.5-7.5h-15'
-								/>
-							</svg>
-						</button>
-					</Form>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth={1.5}
+									stroke='currentColor'
+									className='w-6 h-6'
+								>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M12 4.5v15m7.5-7.5h-15'
+									/>
+								</svg>
+							</button>
+						</Form>
+					) : null}
 				</div>
 			</main>
 		</>
