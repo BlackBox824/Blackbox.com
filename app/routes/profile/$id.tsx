@@ -148,6 +148,24 @@ export default function UpdateProfile() {
 								/>
 							</div>
 						</div>
+						<div className='mt-4'>
+							<label
+								htmlFor='referred_by'
+								className='block text-sm font-medium text-gray-700'
+							>
+								Referred Bby
+							</label>
+							<div className='flex mt-1 rounded-md shadow-sm'>
+								<input
+									type='text'
+									name='referred_by'
+									id='referred_by'
+									defaultValue={profile.referred_by}
+									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+									placeholder='John Doe'
+								/>
+							</div>
+						</div>
 						<button
 							type='submit'
 							className='inline-flex items-center justify-center px-6 py-2 mt-6 text-sm font-semibold text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'

@@ -12,6 +12,7 @@ export type Event = {
 	name: string;
 	id: string;
 	date: Date;
+	description: string;
 	user_id: string;
 };
 
@@ -31,4 +32,5 @@ export type Profile = {
 	dob: Date;
 	name: string;
 	email: string;
+	referred_by: string;
 };

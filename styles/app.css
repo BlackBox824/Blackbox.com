@@ -1,3 +1,19 @@
+@font-face {
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 100 900;
+	fontdisplay: swap;
+	src: url('/fonts/Montserrat.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Abril_Fatface';
+	font-style: normal;
+	font-weight: 400;
+	fontdisplay: swap;
+	src: url('/fonts/AbrilFatface.ttf') format('truetype');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

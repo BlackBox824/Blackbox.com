@@ -20,6 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
 		user_id: user.id,
 		name: formData.get('name'),
 		date: formData.get('date'),
+		description: formData.get('description'),
 	};
 
 	await supabaseClient.from('event').insert([newEvent]).single();
@@ -78,6 +79,23 @@ export default function AddEvent() {
 									id='date'
 									required
 									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+								/>
+							</div>
+						</div>
+						<div className='mt-4'>
+							<label
+								htmlFor='description'
+								className='block text-sm font-medium text-gray-700'
+							>
+								Brief description for the event
+							</label>
+							<div className='mt-1'>
+								<textarea
+									id='description'
+									name='description'
+									rows={3}
+									className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+									placeholder='A very special day to be celebrated with my best friends'
 								/>
 							</div>
 						</div>

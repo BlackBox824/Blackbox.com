@@ -2,8 +2,10 @@ import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import type { User } from '@supabase/supabase-js';
 import type { Wishlist, Item } from '~/models';
 
+import { useEffect, useRef, useState } from 'react';
 import { json } from '@remix-run/node';
 import { Form, useLoaderData, useTransition } from '@remix-run/react';
+
 import { Navbar } from '~/components';
 import { requireUser } from '~/utils/auth';
 
@@ -42,23 +44,28 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	if (intent === 'update') {
 		const itemId = formData.get('id');
+		const isReceived = formData.get('received') === 'yes';
 
 		const { data: item } = await supabaseClient
 			.from<Item>('item')
-			.update({ received: true })
+			.update({ received: !isReceived })
 			.match({ id: itemId });
 		return { item };
 	}
 
-	const newItem = {
-		name: formData.get('name'),
-		wishlist_id: wishlistId,
-	};
+	const newItems = [];
+	const allItems = formData.getAll('name');
+	for (const item of allItems) {
+		if (item) {
+			const i = {
+				name: item,
+				wishlist_id: wishlistId,
+			};
+			newItems.push(i);
+		}
+	}
 
-	const { data: item } = await supabaseClient
-		.from('item')
-		.insert([newItem])
-		.single();
+	const { data: item } = await supabaseClient.from('item').insert(newItems);
 
 	return { item };
 };
@@ -69,14 +76,50 @@ type LoaderData = {
 	item: Item[];
 };
 
+const itemSuggestions = [
+	{ id: 1, placeholder: 'Dress to express e.g; Sneakers(8)' },
+	{ id: 2, placeholder: 'Vacation around the corner e.g; Sunglasses' },
+	{ id: 3, placeholder: 'Gadget guru e.g; Airpods' },
+	{ id: 4, placeholder: 'Glam & glow e.g; Mac lipstick, Trimmer' },
+	{ id: 5, placeholder: 'Your dream purchase e.g; PS5, Euro trip' },
+	{ id: 6, placeholder: 'Up your game e.g; Swim gear' },
+	{ id: 7, placeholder: 'For creative you e.g; Ukelele, Instax' },
+];
+
 export default function WishlistItem() {
+	const formRef = useRef<HTMLFormElement>(null);
+	const [suggestedItems, setSuggestedItems] = useState(itemSuggestions);
 	const { wishlist, user, item } = useLoaderData<LoaderData>();
 
 	const transition = useTransition();
 	const isDeleting = transition.submission?.formData.get('intent') === 'delete';
 	const isUpdating = transition.submission?.formData.get('intent') === 'update';
+	const isAdding = transition.submission?.formData.get('intent') === 'add';
 
 	const isCurrentUser = wishlist.user_id === user.id;
+
+	const handleAddItem = () => {
+		setSuggestedItems(prev => [
+			...prev,
+			{ id: prev.length + 1, placeholder: 'Add item' },
+		]);
+	};
+
+	const copy = () => {
+		const el = document.createElement('input');
+		el.value = window.location.href;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+	};
+
+	useEffect(() => {
+		if (!isAdding) {
+			formRef.current?.reset();
+			setSuggestedItems(itemSuggestions);
+		}
+	}, [isAdding]);
 
 	return (
 		<>
@@ -93,6 +136,13 @@ export default function WishlistItem() {
 									<Form method='post' className='flex items-center'>
 										<label htmlFor='id'>
 											<input name='id' className='hidden' defaultValue={id} />
+										</label>
+										<label htmlFor='received'>
+											<input
+												name='received'
+												className='hidden'
+												defaultValue={received ? 'yes' : 'no'}
+											/>
 										</label>
 										<button
 											type='submit'
@@ -155,50 +205,60 @@ export default function WishlistItem() {
 							))}
 						</ol>
 					) : (
-						<p>There are no items in your wishlist...</p>
+						<p>
+							There are no items in your wishlist. Here are a few suggestions
+							from us...
+						</p>
 					)}
 					{isCurrentUser ? (
 						<Form
+							ref={formRef}
 							method='post'
-							className='flex justify-between w-full mt-6 md:w-3/4 item-center'
+							className='flex flex-col w-full gap-2 mt-6 md:w-3/4 item-center'
 						>
-							<div className='flex-1'>
-								<label
-									htmlFor='name'
-									className='block text-sm font-medium text-left text-gray-700 sr-only'
-								>
-									Item Name
-								</label>
-								<div className='flex rounded-md shadow-sm'>
-									<input
-										type='text'
-										name='name'
-										id='name'
-										required
-										className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-										placeholder='Add item'
-									/>
+							{suggestedItems.map(({ id, placeholder }) => (
+								<div className='flex-1' key={id}>
+									<label
+										htmlFor='name'
+										className='block text-sm font-medium text-left text-gray-700 sr-only'
+									>
+										Item Name
+									</label>
+									<div className='flex rounded-md shadow-sm'>
+										<input
+											type='text'
+											name='name'
+											id={`name-${id}`}
+											className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+											placeholder={placeholder}
+										/>
+									</div>
 								</div>
-							</div>
+							))}
 							<button
-								type='submit'
-								className='inline-flex justify-center px-3 py-1 pt-1.5 ml-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+								className='justify-center px-4 py-2 mt-4 text-sm font-medium text-indigo-600 border border-indigo-600 rounded-md shadow-sm hover:border-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+								type='button'
+								onClick={handleAddItem}
 							>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth={1.5}
-									stroke='currentColor'
-									className='w-6 h-6'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M12 4.5v15m7.5-7.5h-15'
-									/>
-								</svg>
+								+ Add Item
 							</button>
+							<div className='flex items-center justify-between gap-2 mt-8'>
+								<button
+									type='submit'
+									name='intent'
+									value='add'
+									disabled={isAdding}
+									className='inline-flex justify-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+								>
+									Save
+								</button>
+								<button
+									className='inline-flex justify-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+									onClick={copy}
+								>
+									Copy Link
+								</button>
+							</div>
 						</Form>
 					) : null}
 				</div>

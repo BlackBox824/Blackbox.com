@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 		id,
 		title,
 		description,
-		user: user_id ( id, name, phone, email )
+		user: user_id ( id, name, phone, email, dob )
 	`);
 
 	const filteredWishlist = wishlist?.filter(
@@ -47,7 +47,6 @@ export default function Explore() {
 	}, Object.create(null));
 
 	const resultedUsers = userList ? Object.keys(userList) : [];
-	console.log(userList);
 
 	return (
 		<>
@@ -91,11 +90,17 @@ export default function Explore() {
 							{resultedUsers.map(userId => (
 								<li
 									key={userId}
-									className='flex items-center justify-between p-4 py-6 bg-white border rounded-md shadow'
+									className='flex items-center justify-between gap-4 p-4 py-6 bg-white border rounded-md shadow'
 								>
-									<h4 className='font-medium text-gray-700'>
-										{userList[userId][0].user.name} ({userList[userId].length})
-									</h4>
+									<div>
+										<h4 className='font-medium text-left text-gray-700'>
+											{userList[userId][0].user.name} ({userList[userId].length}
+											)
+										</h4>
+										<p className='mt-1 text-sm font-light text-left text-gray-500'>
+											DOB: {userList[userId][0].user?.dob ?? 'NA'}
+										</p>
+									</div>
 									<Link
 										className='inline-flex justify-center px-3 py-1 text-sm font-medium text-indigo-700 border border-indigo-700 rounded hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 										to={`/wishlists/${userId}`}
