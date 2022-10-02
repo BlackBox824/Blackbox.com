@@ -45,18 +45,23 @@ type LoaderData = {
 
 export default function Home() {
 	const { wishlist, events, user } = useLoaderData<LoaderData>();
+
+	const sortedWishlist = wishlist.sort((a, b) =>
+		a.created_at > b.created_at ? 1 : -1
+	);
+
+	if (!user) {
+		return <p className='text-lg font-light text-gray-800'>Just a moment...</p>;
+	}
 	return (
 		<>
 			<Navbar user={user} />
-			<img
-				src='/images/banner.png'
-				alt='banner'
-				className='max-w-6xl mx-auto'
-			/>
-			<main className='max-w-4xl px-2 py-4 mx-auto mt-4 sm:px-6 lg:px-8'>
-				<div className='flex items-center justify-between'>
+			<main className='max-w-6xl px-2 py-4 mx-auto mt-4 sm:px-6 lg:px-8'>
+				<img src='/images/banner.png' alt='banner' />
+				<div className='flex items-center justify-between mt-8'>
 					<h2 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-						My Wishlists ({wishlist.filter(list => !list.disabled).length})
+						My Wishlists ({sortedWishlist.filter(list => !list.disabled).length}
+						)
 					</h2>
 					<Link
 						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
@@ -66,9 +71,9 @@ export default function Home() {
 					</Link>
 				</div>
 				<div className='p-4 mt-2 rounded bg-slate-100'>
-					{wishlist.filter(list => !list.disabled).length > 0 ? (
+					{sortedWishlist.filter(list => !list.disabled).length > 0 ? (
 						<ol className='max-h-[350px] overflow-y-scroll'>
-							{wishlist
+							{sortedWishlist
 								.filter(list => !list.disabled)
 								.slice(0, 3)
 								.map(list => (
@@ -142,12 +147,12 @@ export default function Home() {
 						</Link>
 					</div>
 				</div>
-				<div className='flex items-center justify-between gap-4 my-8'>
-					<h3 className='mt-8 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
+				<div className='flex items-center justify-between gap-4 p-4 py-8 my-8 bg-slate-100'>
+					<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 						Explore Others Wishlists
 					</h3>
 					<Link
-						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+						className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 						to='/wishlist/search'
 					>
 						Search
@@ -176,12 +181,14 @@ export default function Home() {
 					) : (
 						<p>You have not created any events yet!</p>
 					)}
-					<Link
-						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
-						to='/event/add'
-					>
-						Create Event
-					</Link>
+					<div className='flex justify-center'>
+						<Link
+							className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+							to='/event/add'
+						>
+							Create Event
+						</Link>
+					</div>
 				</div>
 			</main>
 		</>

@@ -153,7 +153,7 @@ export default function UpdateProfile() {
 								htmlFor='referred_by'
 								className='block text-sm font-medium text-gray-700'
 							>
-								Referred Bby
+								Referred by
 							</label>
 							<div className='flex mt-1 rounded-md shadow-sm'>
 								<input

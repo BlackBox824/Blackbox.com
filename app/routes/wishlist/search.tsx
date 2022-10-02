@@ -17,12 +17,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 		id,
 		title,
 		description,
+		disabled,
 		user: user_id ( id, name, phone, email, dob )
 	`);
 
 	const filteredWishlist = wishlist?.filter(
 		item =>
-			(item.user.name &&
+			(!item.disabled &&
+				item.user.name &&
 				item.user.name
 					.toLowerCase()
 					.includes(searchTerm?.trim().toLowerCase())) ||
@@ -110,11 +112,7 @@ export default function Explore() {
 								</li>
 							))}
 						</ol>
-					) : (
-						<p className='mt-8 text-sm text-gray-700'>
-							Looks like none of your friends has started wishing yet!
-						</p>
-					)}
+					) : null}
 				</div>
 			</main>
 		</>

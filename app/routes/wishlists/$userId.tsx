@@ -45,18 +45,22 @@ export default function Wishlists() {
 
 	const isCurrentUser =
 		matches.findIndex(match => match.pathname.includes(user.id)) > -1;
+
+	const sortedWishlist = wishlist.sort((a, b) =>
+		a.created_at > b.created_at ? 1 : -1
+	);
 	return (
 		<>
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
 				<h2 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 					{isCurrentUser ? 'My' : `${profile[0].name}'s`} Wishlists (
-					{wishlist.filter(list => !list.disabled).length})
+					{sortedWishlist.filter(list => !list.disabled).length})
 				</h2>
 				<div className='p-4 mt-2 rounded bg-slate-100'>
-					{wishlist.filter(list => !list.disabled).length > 0 ? (
+					{sortedWishlist.filter(list => !list.disabled).length > 0 ? (
 						<ol>
-							{wishlist
+							{sortedWishlist
 								.filter(list => !list.disabled)
 								.map(list => (
 									<li

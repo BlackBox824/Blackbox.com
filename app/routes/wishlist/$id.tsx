@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import type { Wishlist, Item } from '~/models';
 
 import { useEffect, useRef, useState } from 'react';
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { Form, useLoaderData, useTransition } from '@remix-run/react';
 
 import { Navbar } from '~/components';
@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const { id: wishlistId } = params;
-	const { supabaseClient } = await requireUser(request);
+	const { supabaseClient, user } = await requireUser(request);
 
 	const formData = await request.formData();
 	const intent = formData.get('intent');
@@ -65,9 +65,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 		}
 	}
 
-	const { data: item } = await supabaseClient.from('item').insert(newItems);
+	await supabaseClient.from('item').insert(newItems);
 
-	return { item };
+	return redirect(`/wishlists/${user.id}`);
 };
 
 type LoaderData = {
@@ -112,6 +112,7 @@ export default function WishlistItem() {
 		el.select();
 		document.execCommand('copy');
 		document.body.removeChild(el);
+		window.alert('Link Copied!');
 	};
 
 	useEffect(() => {
