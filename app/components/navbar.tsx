@@ -15,7 +15,7 @@ export function Navbar({ user }: { user?: User | null }) {
 		<nav className='bg-gray-800'>
 			<div className='max-w-6xl px-2 mx-auto sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
-					<Link to='/home'>
+					<Link prefetch='intent' to='/home'>
 						<h1 className='font-serif text-xl text-white'>MYW</h1>
 					</Link>
 					{user ? (

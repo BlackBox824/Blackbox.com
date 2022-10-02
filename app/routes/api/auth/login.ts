@@ -14,7 +14,7 @@ export const action: ActionFunction = async ({ request }) => {
 	//commit session
 	const cookieString = await commitSession(session);
 	//return headers to set cookie
-	return redirect('/home', {
+	return redirect('/loader', {
 		headers: {
 			'Set-Cookie': cookieString,
 		},
