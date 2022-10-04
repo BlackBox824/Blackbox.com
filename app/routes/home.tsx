@@ -6,6 +6,7 @@ import { json, redirect } from '@remix-run/node';
 import { Form, Link, useLoaderData } from '@remix-run/react';
 import { Navbar } from '~/components';
 import { requireUser } from '~/utils/auth';
+import { useEffect } from 'react';
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const { supabaseClient, user } = await requireUser(request);
@@ -17,12 +18,19 @@ export const loader: LoaderFunction = async ({ request }) => {
 		.from('event')
 		.select('*')
 		.match({ user_id: user.id });
+	const { data: profile } = await supabaseClient
+		.from('user_profile')
+		.select('*')
+		.match({ id: user.id });
 
-	if (wishlist?.length === 0) {
+	if (!profile?.length || !profile[0]?.phone) {
 		throw redirect('/profile/edit');
 	}
 
-	return json({ wishlist, events, user });
+	const url = new URL(request.url);
+	const itemsAdded = url.searchParams.get('itemsAdded');
+
+	return json({ wishlist, events, user, itemsAdded });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -41,14 +49,21 @@ type LoaderData = {
 	wishlist: Wishlist[];
 	events: Event[];
 	user: User;
+	itemsAdded: string;
 };
 
 export default function Home() {
-	const { wishlist, events, user } = useLoaderData<LoaderData>();
+	const { wishlist, events, user, itemsAdded } = useLoaderData<LoaderData>();
 
 	const sortedWishlist = wishlist.sort((a, b) =>
-		a.created_at > b.created_at ? 1 : -1
+		a.created_at > b.created_at ? -1 : 1
 	);
+
+	useEffect(() => {
+		if (itemsAdded) {
+			window.alert(`${itemsAdded} new items added to your wishlist!`);
+		}
+	}, [itemsAdded]);
 
 	if (!user) {
 		return <p className='text-lg font-light text-gray-800'>Just a moment...</p>;

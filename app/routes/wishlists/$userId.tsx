@@ -47,7 +47,7 @@ export default function Wishlists() {
 		matches.findIndex(match => match.pathname.includes(user.id)) > -1;
 
 	const sortedWishlist = wishlist.sort((a, b) =>
-		a.created_at > b.created_at ? 1 : -1
+		a.created_at > b.created_at ? -1 : 1
 	);
 	return (
 		<>

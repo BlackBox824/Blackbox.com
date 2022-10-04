@@ -4,7 +4,12 @@ import type { Wishlist, Item } from '~/models';
 
 import { useEffect, useRef, useState } from 'react';
 import { json, redirect } from '@remix-run/node';
-import { Form, useLoaderData, useTransition } from '@remix-run/react';
+import {
+	Form,
+	useFetcher,
+	useLoaderData,
+	useTransition,
+} from '@remix-run/react';
 
 import { Navbar } from '~/components';
 import { requireUser } from '~/utils/auth';
@@ -27,7 +32,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const { id: wishlistId } = params;
-	const { supabaseClient, user } = await requireUser(request);
+	const { supabaseClient } = await requireUser(request);
 
 	const formData = await request.formData();
 	const intent = formData.get('intent');
@@ -65,9 +70,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 		}
 	}
 
-	await supabaseClient.from('item').insert(newItems);
+	const { data } = await supabaseClient.from('item').insert(newItems);
 
-	return redirect(`/wishlists/${user.id}`);
+	if (data?.length) {
+		throw redirect(`/home?itemsAdded=${data?.length}`);
+	}
+
+	return { data };
 };
 
 type LoaderData = {
@@ -86,14 +95,104 @@ const itemSuggestions = [
 	{ id: 7, placeholder: 'For creative you e.g; Ukelele, Instax' },
 ];
 
+type ItemProps = Item & {
+	isCurrentUser: boolean;
+};
+
+function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
+	const fetcher = useFetcher();
+	const isDeleting =
+		fetcher.submission?.formData.get('id') === id.toString() &&
+		fetcher.submission?.formData.get('intent') === 'delete';
+	const isUpdating = fetcher.submission?.formData.get('id') === id.toString();
+	const isReceived = received || fetcher.submission?.formData.get('received');
+
+	return (
+		<li
+			key={id}
+			className='p-4 bg-white border rounded-md shadow'
+			hidden={isDeleting}
+		>
+			<fetcher.Form replace method='post' className='flex items-center'>
+				<label htmlFor='id'>
+					<input name='id' className='hidden' defaultValue={id} />
+				</label>
+				<label htmlFor='received'>
+					<input
+						name='received'
+						className='hidden'
+						defaultValue={isReceived ? 'yes' : 'no'}
+					/>
+				</label>
+				<button
+					type='submit'
+					name='intent'
+					value='update'
+					disabled={isUpdating}
+					className={`mr-2 inline-flex justify-center p-0.5 text-sm ${
+						isReceived
+							? 'bg-green-500 border border-transparent hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
+							: 'border border-gray-500'
+					} rounded text-white`}
+				>
+					<svg
+						xmlns='http://www.w3.org/2000/svg'
+						viewBox='0 0 20 20'
+						fill='currentColor'
+						className='w-4 h-4'
+					>
+						<path
+							fillRule='evenodd'
+							d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
+							clipRule='evenodd'
+						/>
+					</svg>
+				</button>
+				<h4
+					className={`font-medium ${
+						isReceived ? 'text-gray-500 line-through' : 'text-gray-700'
+					}`}
+				>
+					{name}
+				</h4>
+				<div className='flex-1' />
+				{isCurrentUser ? (
+					<button
+						type='submit'
+						name='intent'
+						value='delete'
+						disabled={isDeleting}
+						className='inline-flex justify-center px-3 py-1 pt-1.5 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2'
+					>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							viewBox='0 0 20 20'
+							fill='currentColor'
+							className='w-5 h-5'
+						>
+							<path
+								fillRule='evenodd'
+								d='M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z'
+								clipRule='evenodd'
+							/>
+						</svg>
+					</button>
+				) : null}
+			</fetcher.Form>
+		</li>
+	);
+}
+
 export default function WishlistItem() {
 	const formRef = useRef<HTMLFormElement>(null);
 	const [suggestedItems, setSuggestedItems] = useState(itemSuggestions);
 	const { wishlist, user, item } = useLoaderData<LoaderData>();
 
+	const sortedItems = item.sort((a, b) =>
+		a.created_at > b.created_at ? 1 : -1
+	);
+
 	const transition = useTransition();
-	const isDeleting = transition.submission?.formData.get('intent') === 'delete';
-	const isUpdating = transition.submission?.formData.get('intent') === 'update';
 	const isAdding = transition.submission?.formData.get('intent') === 'add';
 
 	const isCurrentUser = wishlist.user_id === user.id;
@@ -118,9 +217,9 @@ export default function WishlistItem() {
 	useEffect(() => {
 		if (!isAdding) {
 			formRef.current?.reset();
-			setSuggestedItems(itemSuggestions);
+			setSuggestedItems(item.length > 0 ? [] : itemSuggestions);
 		}
-	}, [isAdding]);
+	}, [isAdding, item.length]);
 
 	return (
 		<>
@@ -130,79 +229,10 @@ export default function WishlistItem() {
 					{wishlist.title}
 				</h3>
 				<div className='flex flex-col items-center justify-center p-4 mt-2 text-center rounded bg-slate-100'>
-					{item.length > 0 ? (
+					{sortedItems.length > 0 ? (
 						<ol className='flex flex-col w-full gap-4 md:w-3/4'>
-							{item.map(({ id, name, received }) => (
-								<li key={id} className='p-4 bg-white border rounded-md shadow'>
-									<Form method='post' className='flex items-center'>
-										<label htmlFor='id'>
-											<input name='id' className='hidden' defaultValue={id} />
-										</label>
-										<label htmlFor='received'>
-											<input
-												name='received'
-												className='hidden'
-												defaultValue={received ? 'yes' : 'no'}
-											/>
-										</label>
-										<button
-											type='submit'
-											name='intent'
-											value='update'
-											disabled={isUpdating}
-											className={`mr-2 inline-flex justify-center p-0.5 text-sm ${
-												received
-													? 'bg-green-500 border border-transparent hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
-													: 'border border-gray-500'
-											} rounded text-white`}
-										>
-											<svg
-												xmlns='http://www.w3.org/2000/svg'
-												viewBox='0 0 20 20'
-												fill='currentColor'
-												className='w-4 h-4'
-											>
-												<path
-													fillRule='evenodd'
-													d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
-													clipRule='evenodd'
-												/>
-											</svg>
-										</button>
-										<h4
-											className={`font-medium ${
-												received
-													? 'text-gray-500 line-through'
-													: 'text-gray-700'
-											}`}
-										>
-											{name}
-										</h4>
-										<div className='flex-1' />
-										{isCurrentUser ? (
-											<button
-												type='submit'
-												name='intent'
-												value='delete'
-												disabled={isDeleting}
-												className='inline-flex justify-center px-3 py-1 pt-1.5 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2'
-											>
-												<svg
-													xmlns='http://www.w3.org/2000/svg'
-													viewBox='0 0 20 20'
-													fill='currentColor'
-													className='w-5 h-5'
-												>
-													<path
-														fillRule='evenodd'
-														d='M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z'
-														clipRule='evenodd'
-													/>
-												</svg>
-											</button>
-										) : null}
-									</Form>
-								</li>
+							{sortedItems.map(i => (
+								<ListItem key={i.id} {...i} isCurrentUser={isCurrentUser} />
 							))}
 						</ol>
 					) : (
@@ -251,7 +281,7 @@ export default function WishlistItem() {
 									disabled={isAdding}
 									className='inline-flex justify-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 								>
-									Save
+									{isAdding ? 'Saving...' : 'Save'}
 								</button>
 								<button
 									className='inline-flex justify-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'

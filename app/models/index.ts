@@ -17,7 +17,7 @@ export type Event = {
 };
 
 export type Item = {
-	created_at: Date;
+	created_at: string;
 	name: string;
 	id: number;
 	received: boolean;

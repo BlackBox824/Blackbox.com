@@ -1,19 +1,24 @@
 import type { LoaderFunction } from '@remix-run/node';
 
-import { redirect } from '@remix-run/node';
+import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useEffect } from 'react';
 import { requireUser } from '~/utils/auth';
 
 export const loader: LoaderFunction = async ({ request }) => {
-	const { supabaseClient } = await requireUser(request);
-	const { data: wishlist } = await supabaseClient.from('wishlist').select('*');
-
-	if (wishlist?.length === 0) {
-		throw redirect('/profile/edit');
-	} else {
-		throw redirect('/home');
-	}
+	const { user } = await requireUser(request);
+	return { user };
 };
 
 export default function Skeleton() {
-	return <p className='text-lg font-light text-gray-800'>Just a moment...</p>;
+	const navigate = useNavigate();
+	const { user } = useLoaderData();
+
+	useEffect(() => {
+		if (user) {
+			navigate('/home');
+		}
+	}, [navigate, user]);
+	return (
+		<p className='p-4 text-lg font-bold text-gray-800'>Just a moment...</p>
+	);
 }

@@ -16,7 +16,7 @@ export function Navbar({ user }: { user?: User | null }) {
 			<div className='max-w-6xl px-2 mx-auto sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
 					<Link prefetch='intent' to='/home'>
-						<h1 className='font-serif text-xl text-white'>MYW</h1>
+						<h1 className='font-serif text-white md:text-lg'>MakeyourWish</h1>
 					</Link>
 					{user ? (
 						<UserMenu
@@ -26,10 +26,10 @@ export function Navbar({ user }: { user?: User | null }) {
 					) : (
 						<button
 							type='submit'
-							className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+							className='inline-flex justify-center px-3 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 							onClick={handleSignIn}
 						>
-							Sign in with Google
+							<span>Sign in with Google</span>
 						</button>
 					)}
 				</div>
