@@ -49,12 +49,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	if (intent === 'update') {
 		const itemId = formData.get('id');
-		const isReceived = formData.get('received') === 'yes';
+		const isReceived = JSON.parse(formData.get('received') as string);
 
 		const { data: item } = await supabaseClient
 			.from<Item>('item')
 			.update({ received: !isReceived })
 			.match({ id: itemId });
+
 		return { item };
 	}
 
@@ -72,11 +73,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	const { data } = await supabaseClient.from('item').insert(newItems);
 
-	if (data?.length) {
-		throw redirect(`/home?itemsAdded=${data?.length}`);
-	}
-
-	return { data };
+	return redirect(`/home${data?.length ? `?itemsAdded=${data?.length}` : ''}`);
 };
 
 type LoaderData = {
@@ -93,7 +90,7 @@ const itemSuggestions = [
 	{ id: 5, placeholder: '5) Up your game - Swim gear / Racquet' },
 	{ id: 6, placeholder: '6) WFH Essentials - Keyboard' },
 	{ id: 7, placeholder: '7) Creative You - Ukelele / Instax' },
-	{ id: 8, placeholder: '8) Glam & Glow - Lipstick / Trimmer' }
+	{ id: 8, placeholder: '8) Glam & Glow - Lipstick / Trimmer' },
 ];
 
 type ItemProps = Item & {
@@ -106,8 +103,6 @@ function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
 		fetcher.submission?.formData.get('id') === id.toString() &&
 		fetcher.submission?.formData.get('intent') === 'delete';
 	const isUpdating = fetcher.submission?.formData.get('id') === id.toString();
-	const isReceived =
-		received || fetcher.submission?.formData.get('received') === 'yes';
 
 	return (
 		<li
@@ -122,8 +117,8 @@ function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
 				<label htmlFor='received'>
 					<input
 						name='received'
-						className='hidden'
-						defaultValue={isReceived ? 'yes' : 'no'}
+						type='hidden'
+						defaultValue={JSON.stringify(received)}
 					/>
 				</label>
 				<button
@@ -132,7 +127,7 @@ function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
 					value='update'
 					disabled={isUpdating}
 					className={`mr-2 inline-flex justify-center p-0.5 text-sm ${
-						isReceived
+						received
 							? 'bg-green-500 border border-transparent hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2'
 							: 'border border-gray-500'
 					} rounded text-white`}
@@ -152,7 +147,7 @@ function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
 				</button>
 				<h4
 					className={`font-medium ${
-						isReceived ? 'text-gray-500 line-through' : 'text-gray-700'
+						received ? 'text-gray-500 line-through' : 'text-gray-700'
 					}`}
 				>
 					{name}
