@@ -51,12 +51,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 		const itemId = formData.get('id');
 		const isReceived = JSON.parse(formData.get('received') as string);
 
-		await supabaseClient
+		const { data: item } = await supabaseClient
 			.from<Item>('item')
 			.update({ received: !isReceived })
 			.match({ id: itemId });
 
-		return redirect(`wishlist/${wishlistId}`);
+		return { item };
 	}
 
 	const newItems = [];
