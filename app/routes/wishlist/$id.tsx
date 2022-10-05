@@ -105,7 +105,8 @@ function ListItem({ id, received, name, isCurrentUser }: ItemProps) {
 		fetcher.submission?.formData.get('id') === id.toString() &&
 		fetcher.submission?.formData.get('intent') === 'delete';
 	const isUpdating = fetcher.submission?.formData.get('id') === id.toString();
-	const isReceived = received || fetcher.submission?.formData.get('received');
+	const isReceived =
+		received || fetcher.submission?.formData.get('received') === 'yes';
 
 	return (
 		<li
