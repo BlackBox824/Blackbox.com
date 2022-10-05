@@ -188,10 +188,6 @@ export default function WishlistItem() {
 	const [suggestedItems, setSuggestedItems] = useState(itemSuggestions);
 	const { wishlist, user, item } = useLoaderData<LoaderData>();
 
-	const sortedItems = item.sort((a, b) =>
-		a.created_at > b.created_at ? 1 : -1
-	);
-
 	const transition = useTransition();
 	const isAdding = transition.submission?.formData.get('intent') === 'add';
 
@@ -229,9 +225,9 @@ export default function WishlistItem() {
 					{wishlist.title}
 				</h3>
 				<div className='flex flex-col items-center justify-center p-4 mt-2 text-center rounded bg-slate-100'>
-					{sortedItems.length > 0 ? (
+					{item.length > 0 ? (
 						<ol className='flex flex-col w-full gap-4 md:w-3/4'>
-							{sortedItems.map(i => (
+							{item.map(i => (
 								<ListItem key={i.id} {...i} isCurrentUser={isCurrentUser} />
 							))}
 						</ol>
