@@ -1,6 +1,12 @@
-# Welcome to Remix!
+# MakeyourWish.in!
 
-- [Remix Docs](https://remix.run/docs)
+- [Website](https://makeyourwish.in)
+
+## Tech stack used
+- Remix
+- Supabase
+- Postgres
+- Tailwind CSS
 
 ## Deployment
 
@@ -22,6 +28,12 @@ To run your Remix app locally, make sure your project's local dependencies are i
 ```sh
 npm install
 ```
+
+Set up the environment variables:
+- Copy the content of `.env.sample`
+- Create a new file called `.env`
+- Get the variable values from supabase dashboard
+- Save the `.env` file. Don't commit it to GitHub.
 
 Afterwards, start the Remix development server like so:
 
