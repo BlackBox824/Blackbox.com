@@ -55,7 +55,7 @@ export default function Explore() {
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
 				<h2 className='text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight'>
-					Explore wishlists
+					Explore Wishlists
 				</h2>
 				<div className='p-4 mt-2 text-center rounded bg-slate-100'>
 					<Form className='relative' method='get'>
@@ -82,7 +82,7 @@ export default function Explore() {
 							type='text'
 							name='term'
 							id='term'
-							placeholder='Search by entering your friend name or phone number'
+							placeholder='Enter Name / Phone number'
 							autoComplete='off'
 							className='w-full py-2 pl-12 pr-4 placeholder-gray-400 border border-gray-300 rounded-md'
 						/>

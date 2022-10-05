@@ -164,7 +164,7 @@ export default function Home() {
 				</div>
 				<div className='flex items-center justify-between gap-4 p-4 py-8 my-8 bg-slate-100'>
 					<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-						Explore Others Wishlists
+						Explore Others' Wishlists
 					</h3>
 					<Link
 						className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'

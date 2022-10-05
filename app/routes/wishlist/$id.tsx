@@ -86,13 +86,14 @@ type LoaderData = {
 };
 
 const itemSuggestions = [
-	{ id: 1, placeholder: 'Dress to express e.g; Sneakers(8)' },
-	{ id: 2, placeholder: 'Vacation around the corner e.g; Sunglasses' },
-	{ id: 3, placeholder: 'Gadget guru e.g; Airpods' },
-	{ id: 4, placeholder: 'Glam & glow e.g; Mac lipstick, Trimmer' },
-	{ id: 5, placeholder: 'Your dream purchase e.g; PS5, Euro trip' },
-	{ id: 6, placeholder: 'Up your game e.g; Swim gear' },
-	{ id: 7, placeholder: 'For creative you e.g; Ukelele, Instax' },
+	{ id: 1, placeholder: '1) Wardrobe Needs - Shoes (Size - 8)' },
+	{ id: 2, placeholder: '2) Upcoming Vacation - Sunglasses' },
+	{ id: 3, placeholder: '3) Gadget Guru - Airpods' },
+	{ id: 4, placeholder: '4) Dream Purchase - PS5 / Euro trip' },
+	{ id: 5, placeholder: '5) Up your game - Swim gear / Racquet' },
+	{ id: 6, placeholder: '6) WFH Essentials - Keyboard' },
+	{ id: 7, placeholder: '7) Creative You - Ukelele / Instax' },
+	{ id: 8, placeholder: '8) Glam & Glow - Lipstick / Trimmer' }
 ];
 
 type ItemProps = Item & {
@@ -234,8 +235,7 @@ export default function WishlistItem() {
 						</ol>
 					) : (
 						<p>
-							There are no items in your wishlist. Here are a few suggestions
-							from us...
+							Let's help you create your perfect Wishlist!
 						</p>
 					)}
 					{isCurrentUser ? (

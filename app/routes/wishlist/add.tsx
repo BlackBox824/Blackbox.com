@@ -42,7 +42,7 @@ export default function AddWishlist() {
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
 				<h3 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-					Create a new wishlist
+					Create a New Wishlist
 				</h3>
 				<div className='flex flex-col items-center justify-center p-4 mt-2 rounded md:px-8 bg-slate-100'>
 					<Form method='post' className='flex flex-col w-full'>
@@ -51,7 +51,7 @@ export default function AddWishlist() {
 								htmlFor='title'
 								className='block text-sm font-medium text-gray-700'
 							>
-								Name of your wishlist*
+								Name of your Wishlist*
 							</label>
 							<div className='flex mt-1 rounded-md shadow-sm'>
 								<input
@@ -60,7 +60,7 @@ export default function AddWishlist() {
 									id='title'
 									required
 									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='My dream gifts'
+									placeholder="My Wedding / B'Day Wishlist"
 								/>
 							</div>
 						</div>
@@ -69,7 +69,7 @@ export default function AddWishlist() {
 								htmlFor='description'
 								className='block text-sm font-medium text-gray-700'
 							>
-								Brief description for your wishlist
+								Brief description
 							</label>
 							<div className='mt-1'>
 								<textarea
@@ -77,7 +77,7 @@ export default function AddWishlist() {
 									name='description'
 									rows={3}
 									className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='I wish my secret santa could gift me all these goodies'
+									placeholder='Date / Venue / Note to your closed ones'
 								/>
 							</div>
 						</div>

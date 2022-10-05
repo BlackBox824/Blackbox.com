@@ -40,10 +40,10 @@ export default function AddEvent() {
 			<Navbar user={user} />
 			<main className='max-w-4xl px-2 py-4 mx-auto sm:px-6 lg:px-8'>
 				<h3 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
-					Create a new event
+					Create a New Event!
 				</h3>
 				<p className='text-sm text-gray-500'>
-					We will send reminders before your special day
+					We'll let your closed ones know!
 				</p>
 				<div className='flex flex-col items-center justify-center p-4 mt-4 rounded md:px-8 bg-slate-100'>
 					<Form method='post' className='flex flex-col w-full'>
@@ -52,7 +52,7 @@ export default function AddEvent() {
 								htmlFor='name'
 								className='block text-sm font-medium text-gray-700'
 							>
-								Name of your event*
+								Name of your Event*
 							</label>
 							<div className='flex mt-1 rounded-md shadow-sm'>
 								<input
@@ -61,7 +61,7 @@ export default function AddEvent() {
 									id='name'
 									required
 									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='My 18th wedding'
+									placeholder='Love Anniversary / Career Milestone'
 								/>
 							</div>
 						</div>
@@ -95,7 +95,7 @@ export default function AddEvent() {
 									name='description'
 									rows={3}
 									className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='A very special day to be celebrated with my best friends'
+									placeholder='Tell your closed ones why it is important to you'
 								/>
 							</div>
 						</div>
