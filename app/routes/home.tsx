@@ -78,12 +78,16 @@ export default function Home() {
 						My Wishlists ({sortedWishlist.filter(list => !list.disabled).length}
 						)
 					</h2>
-					<Link
-						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
-						to={`/wishlists/${user.id}`}
-					>
-						View all
-					</Link>
+					
+						<Link
+							className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+							to='/wishlist/add'
+						>
+							Create Wishlist
+						</Link>
+					
+
+					
 				</div>
 				<div className='p-4 mt-2 rounded bg-slate-100'>
 					{sortedWishlist.filter(list => !list.disabled).length > 0 ? (
@@ -153,13 +157,14 @@ export default function Home() {
 					) : (
 						<p>You have not created any wishlists yet!</p>
 					)}
+					{/* Create Wishlist button was here le */}
 					<div className='flex justify-center'>
-						<Link
-							className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
-							to='/wishlist/add'
-						>
-							Create Wishlist
-						</Link>
+					<Link
+						className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-indigo-600 border border-indigo-600 rounded-md shadow-sm hover:border-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+						to={`/wishlists/${user.id}`}
+					>
+						View all
+					</Link>
 					</div>
 				</div>
 				<div className='flex items-center justify-between gap-4 p-4 py-8 my-8 bg-slate-100'>

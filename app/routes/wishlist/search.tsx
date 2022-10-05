@@ -100,6 +100,9 @@ export default function Explore() {
 											)
 										</h4>
 										<p className='mt-1 text-sm font-light text-left text-gray-500'>
+											Phone: {userList[userId][0].user?.phone ?? 'NA'}
+										</p>
+										<p className='mt-1 text-sm font-light text-left text-gray-500'>
 											DOB: {userList[userId][0].user?.dob ?? 'NA'}
 										</p>
 									</div>

@@ -235,7 +235,7 @@ export default function WishlistItem() {
 						</ol>
 					) : (
 						<p>
-							Let's help you create your perfect Wishlist!
+							<b>Let's help you create your Perfect Wishlist!</b>
 						</p>
 					)}
 					{isCurrentUser ? (
