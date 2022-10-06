@@ -19,6 +19,6 @@ export default function Skeleton() {
 		}
 	}, [navigate, user]);
 	return (
-		<p className='p-4 text-lg font-bold text-gray-800'>Just a moment...</p>
+		<p className='p-4 pt-40 text-lg font-bold text-gray-800 text-center'>Please be Patient...Your wishes are coming true!</p>
 	);
 }

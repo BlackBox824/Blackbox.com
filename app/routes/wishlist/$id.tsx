@@ -252,7 +252,7 @@ export default function WishlistItem() {
 											type='text'
 											name='name'
 											id={`name-${id}`}
-											className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+											className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm placeholder:italic'
 											placeholder={placeholder}
 										/>
 									</div>

@@ -66,7 +66,7 @@ export default function Home() {
 	}, [itemsAdded]);
 
 	if (!user) {
-		return <p className='text-lg font-light text-gray-800'>Just a moment...</p>;
+		return <p className='text-lg font-light text-gray-800'>Please be Patient...Your wishes are coming true!</p>;
 	}
 	return (
 		<>
@@ -170,7 +170,7 @@ export default function Home() {
 					</Link>
 					</div>
 				</div>
-				<div className='flex items-center justify-between gap-4 p-4 py-8 my-8 bg-slate-100'>
+				<div className='flex items-center justify-between gap-4 p-4 pl-2 py-8 my-8 bg-slate-100'>
 					<h3 className='text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 						Explore Others' Wishlists
 					</h3>
