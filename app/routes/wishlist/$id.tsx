@@ -85,10 +85,10 @@ type LoaderData = {
 const itemSuggestions = [
 	{ id: 1, placeholder: '1) Wardrobe Needs - Shoes (Size - 8)' },
 	{ id: 2, placeholder: '2) Upcoming Vacation - Sunglasses' },
-	{ id: 3, placeholder: '3) Gadget Guru - Airpods' },
-	{ id: 4, placeholder: '4) Dream Purchase - PS5 / Euro trip' },
+	{ id: 3, placeholder: '3) Gadget Guru - Alexa' },
+	{ id: 4, placeholder: '4) Home Sweet Home - Ricelights' },
 	{ id: 5, placeholder: '5) Up your game - Swim gear / Racquet' },
-	{ id: 6, placeholder: '6) WFH Essentials - Keyboard' },
+	{ id: 6, placeholder: '6) Missing OTT - Voot' },
 	{ id: 7, placeholder: '7) Creative You - Ukelele / Instax' },
 	{ id: 8, placeholder: '8) Glam & Glow - Lipstick / Trimmer' },
 ];
@@ -279,7 +279,7 @@ export default function WishlistItem() {
 									className='inline-flex justify-center flex-1 px-4 py-2 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 									onClick={copy}
 								>
-									Copy Link
+									Share
 								</button>
 							</div>
 						</Form>

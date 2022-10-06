@@ -122,7 +122,8 @@ export default function Home() {
 												className='inline-flex justify-center px-2 py-1 mr-2 text-sm font-medium text-indigo-700 border border-indigo-700 rounded hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 												to={`/wishlist/${list.id}`}
 											>
-												<svg
+												<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+												{/* <svg
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 20 20'
 													fill='currentColor'
@@ -134,10 +135,12 @@ export default function Home() {
 														d='M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z'
 														clipRule='evenodd'
 													/>
-												</svg>
+												</svg> */}
 											</Link>
+											
 											<button className='inline-flex justify-center px-2 py-1 text-sm font-medium text-red-700 border border-red-700 rounded hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2'>
-												<svg
+											<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+												{/* <svg
 													xmlns='http://www.w3.org/2000/svg'
 													viewBox='0 0 20 20'
 													fill='currentColor'
@@ -148,7 +151,7 @@ export default function Home() {
 														d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z'
 														clipRule='evenodd'
 													/>
-												</svg>
+												</svg> */}
 											</button>
 										</Form>
 									</li>
@@ -178,9 +181,24 @@ export default function Home() {
 						Search
 					</Link>
 				</div>
-				<h3 className='mt-8 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
+
+				<div className='flex items-center justify-between mt-8'>
+					<h2 className='mt-6 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
+						My Events
+					</h2>
+					
+						<Link
+							className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+							to='/event/add'
+						>
+							Create Event
+						</Link>
+				</div>
+
+
+				{/* <h3 className='mt-8 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 					My Events
-				</h3>
+				</h3> */}
 				<div className='p-4 mt-2 rounded bg-slate-100'>
 					{events.length > 0 ? (
 						<ol className='flex flex-col gap-4'>
@@ -202,12 +220,12 @@ export default function Home() {
 						<p>You have not created any events yet!</p>
 					)}
 					<div className='flex justify-center'>
-						<Link
+						{/* <Link
 							className='inline-flex justify-center px-4 py-2 mt-6 text-sm font-medium text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
 							to='/event/add'
 						>
 							Create Event
-						</Link>
+						</Link> */}
 					</div>
 				</div>
 			</main>

@@ -60,7 +60,7 @@ export default function AddWishlist() {
 									id='title'
 									required
 									className='flex-1 block w-full border-gray-300 rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder="My Wedding / B'Day Wishlist"
+									placeholder=""
 								/>
 							</div>
 						</div>
@@ -77,7 +77,7 @@ export default function AddWishlist() {
 									name='description'
 									rows={3}
 									className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
-									placeholder='Date / Venue / Note to your closed ones'
+									placeholder=''
 								/>
 							</div>
 						</div>
