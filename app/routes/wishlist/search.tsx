@@ -115,7 +115,7 @@ export default function Explore() {
 								</li>
 							))}
 						</ol>
-					) : null}
+					) : <p className='mt-1 text-sm font-light text-left text-gray-500 text-center'>No results found...</p>}
 				</div>
 			</main>
 		</>
