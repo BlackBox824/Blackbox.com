@@ -17,4 +17,4 @@ const supabaseAnonKey = isClient
 	? window.env.SUPABSE_ANON_KEY
 	: process.env.SUPABSE_ANON_KEY ?? '';
 
-export default createClient(supabaseUrl, supabaseAnonKey);
+export default createClient(supabaseUrl, supabaseAnonKey, { multiTab: false });
