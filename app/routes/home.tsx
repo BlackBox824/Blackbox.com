@@ -72,7 +72,7 @@ export default function Home() {
 		<>
 			<Navbar user={user} />
 			<main className='max-w-6xl px-2 py-4 mx-auto mt-4 sm:px-6 lg:px-8'>
-				<img src='/images/banner.png' alt='banner' />
+				<img className='w-full' src='/images/banner2.jpeg' alt='banner' />
 				<div className='flex items-center justify-between mt-8'>
 					<h2 className='mt-4 text-lg font-semibold leading-7 text-gray-800 sm:truncate sm:text-xl sm:tracking-tight'>
 						My Wishlists ({sortedWishlist.filter(list => !list.disabled).length}
