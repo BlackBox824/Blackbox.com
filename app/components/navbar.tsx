@@ -16,7 +16,7 @@ export function Navbar({ user }: { user?: User | null }) {
 			<div className='max-w-6xl px-2 mx-auto sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
 					<Link prefetch='intent' to='/home'>
-						<h1 className='font-Montserrat font-bold text-white md:text-lg'>MakeyourWish</h1>
+						<h1 className='font-Montserrat font-bold text-white md:text-lg'>MakeYourWish</h1>
 					</Link>
 					{user ? (
 						<UserMenu

@@ -1,4 +1,4 @@
-# MakeyourWish.in!
+# MakeYourWish.in!
 
 - [Website](https://makeyourwish.in)
 
